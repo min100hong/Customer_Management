@@ -1,3 +1,5 @@
+## Management System
+본 프로그램은 React 공부를 위한 고객관리프로그램입니다.
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
