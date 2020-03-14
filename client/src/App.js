@@ -8,6 +8,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import { withStyles } from '@material-ui/core/styles';
+import axios from 'axios';
 
 const styles = theme => ({
   root: {
@@ -27,8 +28,11 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.callApi()
-      .then(res => this.setState({customers: res}))
+    // this.callApi()
+      // .then(res => this.setState({customers: res}))
+      // .catch(err => console.log(err));
+    axios.get('/api/customers')
+      .then(res => this.setState({ customers: res.data }))
       .catch(err => console.log(err));
   }
 
