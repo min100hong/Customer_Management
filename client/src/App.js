@@ -7,27 +7,33 @@ import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 
 const styles = theme => ({
   root: {
     width: '100%',
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
     overflowX: "auto"
   },
-  table : {
+  table: {
     minWidth: 1080
+  },
+  progress: {
+    marginTop: theme.spacing(2)
   }
 })
 
 class App extends Component {
 
   state = {
-    customers: ""
+    customers: "",
+    completed: 0
   }
 
-  componentDidMount() {
+  componentDidMount() { 
+    this.timer = setInterval(this.progress, 20);   // CircularProgress Bar를 0.2초 단위로 실행
     // this.callApi()
       // .then(res => this.setState({customers: res}))
       // .catch(err => console.log(err));
@@ -41,6 +47,11 @@ class App extends Component {
     const body = await response.json();
     console.log(body);
     return body;
+  }
+
+  progress = () => {
+    const { completed } = this.state;
+    this.setState({ completed: completed >= 100 ? 0 : completed + 1})
   }
 
   render() {
@@ -71,7 +82,13 @@ class App extends Component {
                   job={customer.job}
                 />
               )
-            }) : ""}
+            }) :
+              <TableRow>   {/* CircularProgress Bar : 서버에서 데이터를 가지고 오지 않았다면  */}
+                <TableCell colSpan="6" align="center">
+                  <CircularProgress className={classes.progress} variant="determinate" value={this.state.completed} />
+                </TableCell>
+              </TableRow>
+            }
           </TableBody>
         </Table>
       </Paper>
